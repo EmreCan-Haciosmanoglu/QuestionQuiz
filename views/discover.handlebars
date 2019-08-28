@@ -1,0 +1,87 @@
+<div class="capsule-2">
+    <header class="d-header">
+        <div class="logo">
+            <img src="images/logo/logo-v.png" class="img-logo">
+        </div>
+        <div class="menu">
+            <ul>
+                <a href="/">
+                    <li>
+                        <div class="icon"><img src="images/menu-icon/enter-pin.png" class="img-icon" alt=""> </div>
+                        Enter Pin
+                    </li>
+                </a>
+                <a href="/discover">
+                    <li>
+                        <div class="icon"><img src="images/menu-icon/discover.png" class="img-icon" alt=""> </div>
+                        Discover
+                    </li>
+                </a>
+                <a href="/quiz">
+                    <li>
+                        <div class="icon"> <img src="images/menu-icon/create.png" class="img-icon" alt=""> </div>
+                        Create
+                    </li>
+                </a>
+                <a href="/home">
+                    <li class="li-icon"> <img src="images/menu-icon/profil.png" class="img-icon" alt="">
+                    </li>
+                </a>
+                <a href="/users/logout">
+                    <li> <img src="images/menu-icon/logout.png" class="img-icon" alt="">
+                    </li>
+                </a>
+            </ul>
+        </div>
+    </header>
+    <div class="discover-menu">
+        <ul>
+            <li>
+                <a class="active" href="#"> History </a>
+            </li>
+        </ul>
+    </div>
+    <div class="discover-trend">
+        <div class="discover-trend-in">
+            <div class="discover-title">
+                <span class="spn-discover-title">Trending</span>
+                <span>
+                    <a href="#"> See All </a>
+                </span>
+            </div>
+            <div class="discover-trend-bottom"style="overflow:hidden; ">
+                {{#each Trending}}
+                <div class="discover-trend-block">
+                    <img src="{{this.quizImage}}" alt="quiz image">
+                    <div class="discover-block-text">
+                        <span class="spn-discover">{{this.quizTitle}} </span>
+                        <span class="spn-discover-2"> {{this.questionCount}} Questions</span>
+                        <div class="discover-owner">
+                            {{this.ownerName}} <img src="{{this.ownerImage}}" alt="owner image">
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="discover-quizs">
+        <div class="discover-quizs-title">
+            <h3>Quizs</h3>
+        </div>
+        <div class="discover-quizs-bottom">
+            {{#each Discover}}
+            <div class="discover-quizs-block">
+                <img src="{{this.quizImage}}" alt="quiz image">
+                <div class="discover-quizs-text">
+                    <span class="spn-discover-quizs">{{this.quizTitle}}</span>
+                    <span class="spn-discover-2-quizs"> {{this.questionCount}} Questions</span>
+                    <div class="discover-owner-quizs">
+                        {{this.ownerName}} <img src="{{this.ownerImage}}" alt="owner image">
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

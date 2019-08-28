@@ -1,0 +1,68 @@
+<div class="capsule-2">
+    <header class="quiz-header">
+        <div class="quiz-logo">
+            <a href="/home">
+                <img src="images/logo/logo-w.png" class="img-quiz-logo" alt="Logo White">
+            </a>
+        </div>
+        <div class="close">
+            <a href="/home">
+                <img src="images/quiz/cancel.png" alt="Cancel">
+            </a>
+        </div>
+    </header>
+    <form action="quiz" method="POST" enctype="multipart/form-data">
+        <div class="quiz-content">
+            <div class="quiz-image">
+                <label class="lbl-file" for="file"> Tap to add cover images </label>
+                <input name="fileToUpload" class="fileupload" type="file" onchange="readQuizImageURL(this);" id="file">
+                <img id="QuizImage" src="images/quiz/default-quiz.png" alt="quizImage">
+            </div>
+            <div class="quiz-right">
+                <div class="dropdown">
+                    <div class="select-box select-box-1 ">
+                        <select name="visibility" id="" required="">
+                            {{#each visibility}}
+                            <option value="{{option}}" {{#if isSelected}} selected{{/if}}>{{option}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="select-box select-box-2">
+                        <select name="location" id="" required="">
+                            {{#each location}}
+                            <option value="{{option}}" {{#if isSelected}} selected{{/if}}>{{option}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="select-box select-box-3">
+                        <select name="language" id="" required="">
+                            {{#each language}}
+                            <option value="{{option}}" {{#if isSelected}} selected{{/if}}>{{option}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <input name="title" type="text" placeholder="Title" class="txt-title" maxlength="32" {{#if title}}
+                    value="{{title}}" {{/if}}>
+                <div class="description">
+                    <textarea name="description" type="text" placeholder="Description" class="txt-description"
+                        maxlength="256" {{#if description}} value="{{description}}" {{/if}}></textarea>
+                    Character 256
+                </div>
+                {{#if Message}}
+                <div class="quiz-error">
+                    {{Message}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
+        <div class="quiz-enter-button">
+            <button type="submit" class="btn-quiz-enter">Enter</button>
+        </div>
+    </form>
+</div>
+<script>
+    Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+        return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+    });
+</script>

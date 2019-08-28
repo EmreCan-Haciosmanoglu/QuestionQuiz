@@ -1,0 +1,46 @@
+<div id="Content">
+    {{{body}}}
+</div>
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    var socket = io.connect("http://localhost:3000/game");
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var pin = url.searchParams.get("pin");
+    function emit() {
+        socket.emit("start-the-game", { pin: pin });
+    }
+    function answer(index) {
+        socket.emit('give-answer',
+            {
+                pin: pin,
+                answer: index,
+                val: document.getElementById('progressBar').value
+            });
+    }
+    $(function () {
+        socket.emit('enter-lobby', pin);
+    });
+    socket.on('render-content', (data) => {
+        render(data);
+        if (data.templatedata.value && data.templatedata.time)
+            progress(data.templatedata.value, data.templatedata.time);
+    });
+    function render(data) {
+        var source = data.source;
+        var template = Handlebars.compile(source);
+        var html = template(data.templatedata);
+        document.getElementById("Content").innerHTML = html;
+    }
+    function progress(val, time) {
+        var bar = document.getElementById('progressBar');
+        if (!bar)
+            return;
+        bar.value = val;
+        val--;
+        if (val > 0) {
+            setTimeout(() => { progress(val, time) }, (time / 100.0) * 1000);
+        }
+    }
+</script>
