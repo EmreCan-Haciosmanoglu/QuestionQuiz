@@ -239,6 +239,7 @@ app.use('/home', homeRouter);
 app.use('/discover', discoverRouter);
 app.use('/404', error404Router);
 app.use('/edit', editRouter);
+app.use('/profile-edit', editRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

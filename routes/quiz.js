@@ -96,7 +96,7 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 });
 
 router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
-  User.findOne({ username: req.user.username }, (err, user) => {
+  User.findOne({ username: req.user.username }, async (err, user) => {
     if (err || !user) {
       console.error(err);
       req.logOut();
@@ -108,7 +108,9 @@ router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
     req.checkBody("description", "Description is required").notEmpty();
 
     var errors = req.validationErrors();
-    if (errors && errors.length > 0)
+    if (errors && errors.length > 0) {
+      if (req.file)
+        await unlinkAsync(req.file.path)
       return res.redirect('/quiz?Message='
         + encodeURIComponent(errors[0].msg)
         + ((title && title != "") ? '&title=' + encodeURIComponent(title) : '')
@@ -116,7 +118,7 @@ router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
         + ((location && location != "") ? '&location=' + encodeURIComponent(location) : '')
         + ((visibility && visibility != "") ? '&visibility=' + encodeURIComponent(visibility) : '')
         + ((language && language != "") ? '&language=' + encodeURIComponent(language) : ''));
-
+    }
     pinCreate((pin) => {
       var quizObj = {
         title: title,

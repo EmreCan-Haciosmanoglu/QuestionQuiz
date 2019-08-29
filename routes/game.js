@@ -49,7 +49,7 @@ module.exports = (io) => {
     socket.on('enter-lobby', (pin) => {
       var Room = Rooms[pin];
       var quiz = Room.quiz;
-      var questions = quiz.questions;
+      var questions = quiz.question;
       var thePlayer = new Player('player_' + Math.floor(Math.random() * 10000), socket);
       Room.players[socket.id] = thePlayer;
       if (Room.started) {

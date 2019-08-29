@@ -2,7 +2,9 @@
     <a href="#" class="mobil-profil">Profil</a>
     <header>
         <div class="logo">
-            <img src="/images/logo/logo-v.png" class="img-logo">
+            <a href="/">
+                <img src="/images/logo/logo-v.png" class="img-logo">
+            </a>
         </div>
         <div class="menu">
             <ul>
@@ -10,34 +12,34 @@
                     <a href="/">
                         <div class="icon">
                             <img src="/images/menu-icon/enter-pin.png" class="img-icon" alt="">
-                            Enter Pin
                         </div>
+                        Enter Pin
                     </a>
                 </li>
                 <li>
                     <a href="/discover">
                         <div class="icon">
                             <img src="/images/menu-icon/discover.png" class="img-icon" alt="">
-                            Discover
                         </div>
+                        Discover
                     </a>
                 </li>
                 <li>
                     <a href="/quiz">
                         <div class="icon">
                             <img src="/images/menu-icon/create.png" class="img-icon" alt="">
-                            Create
                         </div>
+                        Create
                     </a>
                 </li>
                 <li class="li-icon">
                     <a href="/home">
-                        <img src="/images/menu-icon/profil.png" class="img-icon" alt="Profil">
+                        <img src="/images/menu-icon/profil.png" class="img-icon" alt="">
                     </a>
                 </li>
                 <li>
                     <a href="/users/logout">
-                        <img src="/images/menu-icon/logout.png" class="img-icon" alt="Logout">
+                        <img src="images/menu-icon/logout.png" class="img-icon" alt="">
                     </a>
                 </li>
             </ul>
@@ -55,31 +57,25 @@
                 <div class="profil-name">
                     <h6 class="h6">
                         {{firstname}} {{lastname}}
-                        <a href="/edit">
+                        <a href="/profile-edit">
                             <img src="/images/user-icon/edit.png" class="img-edit" alt="Edit">
                         </a>
                     </h6>
-                    <h6 class="h6-mail">
-                        {{username}}
-                    </h6>
+                    <h6 class="h6-mail"> {{username}} </h6>
                 </div>
             </div>
             <div class="profil-bottom">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="profil-information-left">
-                            <div>Quiz Created</div>
-                            <div>
-                                {{quizCreated}}
-                            </div>
+                            <div>Quiz Created </div>
+                            <div> {{quizCreated}}</div>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class=" profil-information-right">
-                            <div>Game Played</div>
-                            <div>
-                                {{gamePlayed}}
-                            </div>
+                            <div> Game Played </div>
+                            <div> {{gamePlayed}} </div>
                         </div>
                     </div>
                 </div>
@@ -94,49 +90,49 @@
                 </ul>
             </div>
             {{#each myQuizzes}}
-            <div data-toggle="modal" data-target=".bd-example-modal-lg{{this.index}}" class="my-quiz">
+            <div data-toggle="modal" data-target=".bd-example-modal-lg-{{this.index}}" class="my-quiz">
                 <div class="my-quiz-img">
-                    <img src="{{this.img}}" class="img-quiz" alt="quiz image">
+                    <img src="{{this.img}}" class="img-quiz" alt="Quiz Image">
                 </div>
                 <div class="my-quiz-name">
                     {{this.title}}
                 </div>
+                <div class="my-quiz-question">
+                    {{this.count}} Question(s)
+                </div>
             </div>
-            <div class="modal fade bd-example-modal-lg{{this.index}}" tabindex="-1" role="dialog"
+            <div class="modal fade bd-example-modal-lg-{{this.index}}" tabindex="-1" role="dialog"
                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                     <div class="modal-content">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-xl-6 modal-left">
-                                    <img src="{{this.img}}" class="img-modal" alt="quiz image">
+                                    <img src="{{this.img}}" class="img-modal" alt="Quiz Image">
                                 </div>
                                 <div class="col-xl-6 modal-right">
                                     <h4 class="h4 modal-h4">{{this.title}}</h4>
                                     <div class="modal-user">
-                                        <img src="{{this.imgURL}}" class="img-user-modal" alt="user image">
+                                        <img src="{{this.userImage}}" class="img-user-modal" alt="User Image">
                                         <div class="modal-name">
                                             {{this.username}}
                                         </div>
                                         <div class="modal-star">
-                                            <img src="/images/quiz/star.png" class="img-star" alt="Star">
+                                            <img src="/images/quiz/edit.png" alt="" class="img-delete">
                                             <form action="/home/delete" method="POST">
-                                                <input type="image" class="img-delete" src="/images/quiz/delete.png"
-                                                    alt="Delete" />
+                                                <img src="/images/quiz/delete.png" class="img-delete" alt="Delete">
                                                 <input name="id" type="text" style="display: none;" value="{{this.id}}">
                                             </form>
                                         </div>
                                     </div>
                                     <h5 class="h5-subtitle">Description</h5>
-                                    <br>
                                     <p>
-                                        {{this.desc}} ---
-                                        {{this.count}} Question(s)
+                                        {{this.desc}}
                                     </p>
                                     <div class="modal-start">
-                                        <a href="/game?pin={{this.pin}}" class="btn-play" style="float:left;">Play</a>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            value="Close">Close</button>
+                                        <a href="/game?pin={{this.pin}}" class="btn-play">Play</a>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>

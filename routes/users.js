@@ -103,7 +103,7 @@ function ensureNotAuthenticated(req, res, next) {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect('/?Message=' + encodeURIComponent('Successfully Loged out!'));
 });
 
 module.exports = router;
