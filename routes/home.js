@@ -74,7 +74,8 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();
-  res.redirect('/');
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  res.redirect('/users?LoginError=' + encodeURIComponent("You have to Login to see the page") + '&Redirect=' + encodeURIComponent(fullUrl));
 }
 
 module.exports = router;

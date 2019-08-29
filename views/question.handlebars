@@ -1,73 +1,88 @@
 <div class="capsule-2">
-    <header class="quiz-header">
+    <header class="quiz-header question-header">
         <div class="quiz-logo">
-            <img src="images/logo/logo-w.png" class="img-quiz-logo" alt="">
+            <a href="/home">
+                <img src="/images/logo/logo-w.png" class="img-quiz-logo" alt="">
+            </a>
         </div>
-        <div class="close">
-            <img src="images/quiz/cancel.png" alt="">
-        </div>
+        <a href="/home">
+            <button type="button" class="btn-finish"> Finish </button>
+        </a>
     </header>
     <div class="container question-content">
-        <form action="question" method="POST" enctype="multipart/form-data">
+        <form action="/quiz/question" method="POST" enctype="multipart/form-data">
             <input name="quizID" style="display:none;" value="{{quizID}}">
             <div class="question-image">
                 <label class="lbl-file" for="file"> Tap to add cover images </label>
-                <input class="fileupload" type="file" name="fileToUpload" id="file">
-                <div class="select-box-question">
-                    <select name="time" id="" required="">
-                        <option value="">Select time</option>
-                        <option value="1">10 second</option>
-                        <option value="2">20 second </option>
-                        <option value="3">30 second </option>
-                        <option value="4">40 second </option>
-                        <option value="5">50 second </option>
-                        <option value="6">60 second </option>
-                    </select>
-                </div>
+                <input class="fileupload" type="file" name="fileToUpload" onchange="readQuestionImageURL(this);"
+                    id="file">
+                <img id="QuestionImage" src="/images/quiz/default-quiz.png" alt="">
             </div>
             <div class="question-text">
-                <input name="title" required="" type="text" class="txt-question" placeholder="Tap to add question">
+                <input name="title" type="text" class="txt-question" placeholder="Tap to add question" {{#if title}}
+                    value="{{title}}" {{/if}}>
             </div>
             <div class="question-answer">
                 <div class="row">
                     <div class="col-md-6 ">
                         <div class="a1">
-                            <input name="answer1" required="" type="text" class="txt-answer1" placeholder="Answer 1">
+                            <input name="answer1" type="text" class="txt-answer1" placeholder="Answer 1" {{#if answer1}}
+                                value="{{answer1}}" {{/if}}>
                             <div class="checkbox">
-                                <input required="" type="radio" name="option" value="0">
-                                <label>Option 1</label>
+                                <input required type="radio" name="option" {{#if option0}} checked {{/if}}value="0" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="a2">
-                            <input name="answer2" required="" type="text" class="txt-answer2" placeholder="Answer 2">
+                            <input name="answer2" type="text" class="txt-answer2" placeholder="Answer 2" {{#if answer2}}
+                                value="{{answer2}}" {{/if}}>
                             <div class="checkbox">
-                                <input required="" type="radio" name="option" value="1">
-                                <label>Option 1</label>
+                                <input required type="radio" name="option" {{#if option1}} checked {{/if}}value="1" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 ">
                         <div class="a3">
-                            <input name="answer3" required="" type="text" class="txt-answer3" placeholder="Answer 3">
+                            <input name="answer3" type="text" class="txt-answer3" placeholder="Answer 3" {{#if answer3}}
+                                value="{{answer3}}" {{/if}}>
                             <div class="checkbox">
-                                <input required="" type="radio" name="option" value="2">
-                                <label>Option 1</label>
+                                <input required type="radio" name="option" {{#if option2}} checked {{/if}} value="2" />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="a4">
-                            <input name="answer4" required="" type="text" class="txt-answer4" placeholder="Answer 4">
+                            <input name="answer4" type="text" class="txt-answer4" placeholder="Answer 4" {{#if answer4}}
+                                value="{{answer4}}" {{/if}}>
                             <div class="checkbox">
-                                <input required="" type="radio" name="option" value="3">
-                                <label>Option 1</label>
+                                <input required type="radio" name="option" {{#if option4}} checked {{/if}} value="3" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="select-box-question">
+                <select name="time" id="" required>
+                    <option value="">Select time</option>
+                    {{#each Time}}
+                    <option value="{{this.value}}" {{#if isSelected}} selected {{/if}}>{{this.value}} seconds</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="question-number">
+                {{#if Count}} {{Count}} {{/if}}
+            </div>
+            {{#if ErrorMessage}}
+            <div class="question-error">
+                {{ErrorMessage}}
+            </div>
+            {{/if}}
+            {{#if SuccessMessage}}
+            <div class="question-succes">
+                {{SuccessMessage}}
+            </div>
+            {{/if}}
             <div class="add-question">
                 <button class="btn-add" type="submit" value=""></button>
             </div>

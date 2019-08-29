@@ -25,6 +25,11 @@ var storageQuestion = multer.diskStorage({
 });
 var uploadQuestion = multer({ storage: storageQuestion });
 
+const fs = require('fs')
+const { promisify } = require('util')
+
+const unlinkAsync = promisify(fs.unlink)
+
 
 router.get('/', ensureAuthenticated, (req, res, next) => {
   const data = {
@@ -90,34 +95,9 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
   return res.render('quiz', data);
 });
 
-router.get('/question', ensureAuthenticated, (req, res, next) => {
-  const quizID = req.query.quiz;
-  User.findOne({ username: req.user.username }, (err, user) => {
-    if (err) {
-      console.error(err);
-      res.redirect("/");
-    }
-    else if (!quizID || quizID == "") {
-      res.redirect("/quiz");
-    }
-    else {
-      Quiz.findOne({ userId: user._id, _id: quizID }, (err, quiz) => {
-        if (err) {
-          console.error(err);
-          res.redirect("/quiz");
-        }
-        else {
-          res.render('question', { quizID: quizID });
-        }
-      });
-    }
-  });
-
-});
-
 router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
   User.findOne({ username: req.user.username }, (err, user) => {
-    if (err || !user || user.length == 0) {
+    if (err || !user) {
       console.error(err);
       req.logOut();
       return res.redirect('/users?LoginError=' + encodeURIComponent('Unauthorized Post Request :\nWe couldn\'t find you in our database!'));
@@ -137,14 +117,14 @@ router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
         + ((visibility && visibility != "") ? '&visibility=' + encodeURIComponent(visibility) : '')
         + ((language && language != "") ? '&language=' + encodeURIComponent(language) : ''));
 
-    pinCreate((pin)=>{
+    pinCreate((pin) => {
       var quizObj = {
         title: title,
         description: description,
         location: location,
         language: language,
         pin: pin,
-        img: req.file ? "uploads\\" + req.file.filename : "noImage.jpg",
+        img: req.file ? "uploads\\" + req.file.filename : "uploads\\noImage.jpg",
         userId: user._id,
         visibleTo: true,
         visibility: visibility,
@@ -152,15 +132,15 @@ router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
         active: false,
         date: Date.now()
       };
-  
+
       const quiz = new Quiz(quizObj);
-  
+
       quiz.save().then((result) => {
-        res.redirect('/quiz/question?quiz=' + result._id);
+        return res.redirect('/quiz/question?quiz=' + result._id);
       }).catch((error) => {
         if (error) {
           console.error(error);
-          res.redirect('/quiz?Message=' + encodeURIComponent("Unknown Error occurred!"));
+          return res.redirect('/quiz?Message=' + encodeURIComponent('Unknown Error occurred!'));
         }
       });
     });
@@ -179,49 +159,137 @@ function pinCreate(callback) {
   });
 }
 
+router.get('/question', ensureAuthenticated, (req, res, next) => {
+  const quizID = req.query.quiz;
+  User.findOne({ username: req.user.username }, (error, user) => {
+    if (error || !user) {
+      console.error(error);
+      req.logOut();
+      return res.redirect('/users?LoginError=' + encodeURIComponent('Unauthorized Post Request :\nWe couldn\'t find you in our database!'));
+    }
+    if (!quizID || quizID == "") {
+      return res.redirect('/quiz');
+    }
+    Quiz.findOne({ userId: user._id, _id: quizID }, (error, quiz) => {
+      if (error) {
+        console.error(error);
+        return res.redirect('/quiz');
+      }
+      if (!quiz)
+        return res.redirect('/quiz')
+      var questionCount = quiz.question.length;
+      questionCount++;
+      const firstDigit = questionCount % 10;
+
+      var data = {
+        quizID: quizID,
+        Count: '' + questionCount + (firstDigit == 1 ? 'st' : firstDigit == 2 ? 'nd' : firstDigit == 3 ? 'rd' : 'th') + ' Question',
+        Time: [
+          { value: 10 },
+          { value: 20 },
+          { value: 30 },
+          { value: 40 },
+          { value: 50 },
+          { value: 60 }
+        ]
+      }
+      if (req.query.ErrorMessage)
+        data['ErrorMessage'] = decodeURIComponent(req.query.ErrorMessage);
+      if (req.query.SuccessMessage)
+        data['SuccessMessage'] = decodeURIComponent(req.query.SuccessMessage);
+      if (req.query.title)
+        data['title'] = decodeURIComponent(req.query.title);
+      if (req.query.answer1)
+        data['answer1'] = decodeURIComponent(req.query.answer1);
+      if (req.query.answer2)
+        data['answer2'] = decodeURIComponent(req.query.answer2);
+      if (req.query.answer3)
+        data['answer3'] = decodeURIComponent(req.query.answer3);
+      if (req.query.answer4)
+        data['answer4'] = decodeURIComponent(req.query.answer4);
+      if (req.query.option)
+        data['option' + req.query.option] = decodeURIComponent(req.query.option);
+      if (req.query.time) {
+        var timeArray = data['Time'];
+        for (var i = 0; i < timeArray.length; i++)
+          if (timeArray[i].value == req.query.time) {
+            timeArray[i]['isSelected'] = true;
+            break;
+          }
+      }
+      return res.render('question', data);
+    });
+  });
+});
+
 router.post('/question', uploadQuestion.single("fileToUpload"), (req, res) => {
-  const quizID = req.body.quizID;
-  console.log(req.body);
-  //5d63c91a5316873fecaa8a0f
-  var question = {
-    questionTitle: req.body.title,
-    answers: [
-      req.body.answer1,
-      req.body.answer2,
-      req.body.answer3,
-      req.body.answer4
-    ],
-    answer: parseInt(req.body.option, 10),
-    time: parseInt(req.body.time, 10) * 10,
-    img: req.file ? "uploads\\" + req.file.filename : "noImage.jpg"
-  }
-  User.findOne({ username: req.user.username }, (err, user) => {
+  User.findOne({ username: req.user.username }, async (err, user) => {
     if (err) {
       console.error(err);
-      res.redirect("/");
+      req.logOut();
+      return res.redirect('/users?LoginError=' + encodeURIComponent('Unauthorized Post Request :\nWe couldn\'t find you in our database!'));
     }
-    else if (!quizID || quizID == "") {
-      res.redirect("/quiz");
+
+    const { answer1, answer2, answer3, answer4, quizID, title, option, time } = req.body;
+
+    req.checkBody('title', 'Title is required').notEmpty();
+    req.checkBody('answer1', '1st Answer is required').notEmpty();
+    req.checkBody('answer2', '2nd Answer is required').notEmpty();
+    req.checkBody('answer3', '3rd Answer is required').notEmpty();
+    req.checkBody('answer4', '4th Answer is required').notEmpty();
+    req.checkBody('quizID', 'Corrupted page').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors && errors.length > 0) {
+      if (req.file)
+        await unlinkAsync(req.file.path)
+      if (errors[0].msg == 'Corrupted page')
+        return res.redirect('/quiz?ErrorMessage=' + encodeURIComponent(errors[0].msg));
+      else
+        return res.redirect('/quiz/question?quiz=' + quizID
+          + '&ErrorMessage=' + encodeURIComponent(errors[0].msg)
+          + ((time && time != "") ? '&time=' + encodeURIComponent(time) : '')
+          + ((title && title != "") ? '&title=' + encodeURIComponent(title) : '')
+          + ((option && option != "") ? '&option=' + encodeURIComponent(option) : '')
+          + ((answer1 && answer1 != "") ? '&answer1=' + encodeURIComponent(answer1) : '')
+          + ((answer2 && answer2 != "") ? '&answer2=' + encodeURIComponent(answer2) : '')
+          + ((answer3 && answer3 != "") ? '&answer3=' + encodeURIComponent(answer3) : '')
+          + ((answer4 && answer4 != "") ? '&answer4=' + encodeURIComponent(answer4) : '')
+        );
     }
-    else {
-      Quiz.findOne({ userId: user._id, _id: quizID }, (err, data) => {
-        if (err) {
-          console.error(err);
-          res.redirect("/quiz/question?quiz=" + quizID);
-        }
-        else {
-          console.log(data);
-          data.question.push(question);
-          data.save();
-          res.redirect("/quiz/question?quiz=" + quizID);
-        }
-      });
+
+    //5d63c91a5316873fecaa8a0f
+    var question = {
+      questionTitle: req.body.title,
+      answers: [
+        req.body.answer1,
+        req.body.answer2,
+        req.body.answer3,
+        req.body.answer4
+      ],
+      answer: parseInt(req.body.option, 10),
+      time: parseInt(req.body.time, 10) * 10,
+      img: req.file ? 'uploads\\' + req.file.filename : 'uploads\\noImage.jpg'
     }
+    if (!quizID || quizID == "")
+      return res.redirect('/quiz?Message=' + encodeURIComponent('First you need to create a quiz'));
+
+    Quiz.findOne({ userId: user._id, _id: quizID }, (err, quiz) => {
+      if (err) {
+        console.error(err);
+        return res.redirect('/quiz?Message=' + encodeURIComponent('Unknown Error occurred!'));
+      }
+      quiz.question.push(question);
+      quiz.save();
+      return res.redirect('/quiz/question?quiz=' + quizID + '&SuccessMessage=' + encodeURIComponent('Question Successfully added!'));
+    });
+
   });
 })
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();
-  res.redirect('/users?LoginError=' + encodeURIComponent("You have to Login to see the page"));
+  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  return res.redirect('/users?LoginError=' + encodeURIComponent("You have to Login to see the page") + '&Redirect=' + encodeURIComponent(fullUrl));
 }
 module.exports = router;

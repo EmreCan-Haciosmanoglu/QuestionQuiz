@@ -6,7 +6,7 @@
   <div class="container user">
     <div class="user-logo">
       <a href="/">
-        <img src="images/logo/logo-w.png" class="img-user-logo" alt="Quiz">
+        <img src="/images/logo/logo-w.png" class="img-user-logo" alt="Quiz">
       </a>
     </div>
     <div class="row">
@@ -16,9 +16,12 @@
         </div>
         <div class="login-in">
           <form action="/users/login" method="POST">
+            {{#if Redirect}}
+            <input style="display: none;" name="Redirect" value="{{Redirect}}">
+            {{/if}}
             <div class="login-input">
               <div class="login-img">
-                <img src="images/user-icon/user.png" class="img-user" alt="">
+                <img src="/images/user-icon/user.png" class="img-user" alt="">
               </div>
               <div class="login-textarea">
                 <input name="username" type="text" placeholder="User Name" class="txt-user">
@@ -26,7 +29,7 @@
             </div>
             <div class="login-password-input">
               <div class="login-img">
-                <img src="images/user-icon/password.png" class="img-password" alt="">
+                <img src="/images/user-icon/password.png" class="img-password" alt="">
               </div>
               <div class="login-textarea">
                 <input name="password" type="password" placeholder="Password" class="txt-password">

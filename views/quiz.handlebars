@@ -2,12 +2,12 @@
     <header class="quiz-header">
         <div class="quiz-logo">
             <a href="/home">
-                <img src="images/logo/logo-w.png" class="img-quiz-logo" alt="Logo White">
+                <img src="/images/logo/logo-w.png" class="img-quiz-logo" alt="Logo White">
             </a>
         </div>
         <div class="close">
             <a href="/home">
-                <img src="images/quiz/cancel.png" alt="Cancel">
+                <img src="/images/quiz/cancel.png" alt="Cancel">
             </a>
         </div>
     </header>
@@ -16,7 +16,7 @@
             <div class="quiz-image">
                 <label class="lbl-file" for="file"> Tap to add cover images </label>
                 <input name="fileToUpload" class="fileupload" type="file" onchange="readQuizImageURL(this);" id="file">
-                <img id="QuizImage" src="images/quiz/default-quiz.png" alt="quizImage">
+                <img id="QuizImage" src="/images/quiz/default-quiz.png" alt="quizImage">
             </div>
             <div class="quiz-right">
                 <div class="dropdown">
@@ -61,8 +61,3 @@
         </div>
     </form>
 </div>
-<script>
-    Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-        return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-    });
-</script>

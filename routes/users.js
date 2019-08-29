@@ -78,17 +78,22 @@ passport.use(new LocalStrategy((username, password, done) => {
 }));
 
 router.post('/login', passport.authenticate('local', { failureRedirect: "/users", failureFlash: "Invalid username or password" }), (req, res) => {
-  res.redirect("/home");
+  if (req.body.Redirect)
+    return res.redirect('' + req.body.Redirect);
+  else
+    return res.redirect('/home')
 });
 
 router.get('/', ensureNotAuthenticated, function (req, res, next) {
+  var handlebarsData = {};
   if (req.query.RegisterError && req.query.RegisterError != "")
-    return res.render('users', { 'RegisterError': decodeURIComponent(req.query.RegisterError) });
-  else if (req.query.LoginError && req.query.LoginError != "")
-    return res.render('users', { 'LoginError': decodeURIComponent(req.query.LoginError) });
-  else {
-    return res.render('users');
-  }
+    handlebarsData['RegisterError'] = decodeURIComponent(req.query.RegisterError);
+  if (req.query.LoginError && req.query.LoginError != "")
+    handlebarsData['LoginError'] = decodeURIComponent(req.query.LoginError);
+  if (req.query.Redirect && req.query.Redirect != "")
+    handlebarsData['Redirect'] = decodeURIComponent(req.query.Redirect);
+
+  return res.render('users', handlebarsData);
 });
 
 function ensureNotAuthenticated(req, res, next) {
