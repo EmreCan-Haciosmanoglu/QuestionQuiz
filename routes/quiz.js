@@ -53,15 +53,12 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
       { option: "ElonIsh" }
     ]
   };
-  if (req.query.Message) {
+  if (req.query.Message) 
     data['Message'] = decodeURIComponent(req.query.Message);
-  }
-  if (req.query.title) {
+  if (req.query.title) 
     data['title'] = decodeURIComponent(req.query.title);
-  }
-  if (req.query.description) {
+  if (req.query.description) 
     data['description'] = decodeURIComponent(req.query.description);
-  }
   if (req.query.location) {
     const locationData = decodeURIComponent(req.query.location);
     var locationArr = data.location;

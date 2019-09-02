@@ -251,12 +251,10 @@ module.exports = (io) => {
     });
 
     socket.on('disconnect', () => {
-      var name = socket.name;
-      if (name) {
-        var pin = name.split("|")[1];
-        if (Rooms[pin])
-          delete Rooms[pin][socket.id];
-      }
+      Object.values(Rooms).forEach((room) => {
+        if (room[socket.id])
+          delete room[socket.id];
+      });
     });
   });
   return router;

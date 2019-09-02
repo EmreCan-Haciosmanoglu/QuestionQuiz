@@ -11,7 +11,7 @@
                 <li>
                     <a href="/">
                         <div class="icon">
-                            <img src="/images/menu-icon/enter-pin.png" class="img-icon" alt="">
+                            <img src="/images/menu-icon/enter-pin.png" class="img-icon" alt="Enter Pin">
                         </div>
                         Enter Pin
                     </a>
@@ -19,7 +19,7 @@
                 <li>
                     <a href="/discover">
                         <div class="icon">
-                            <img src="/images/menu-icon/discover.png" class="img-icon" alt="">
+                            <img src="/images/menu-icon/discover.png" class="img-icon" alt="Discover">
                         </div>
                         Discover
                     </a>
@@ -27,19 +27,19 @@
                 <li>
                     <a href="/quiz">
                         <div class="icon">
-                            <img src="/images/menu-icon/create.png" class="img-icon" alt="">
+                            <img src="/images/menu-icon/create.png" class="img-icon" alt="Create Quiz">
                         </div>
                         Create
                     </a>
                 </li>
                 <li class="li-icon">
                     <a href="/home">
-                        <img src="/images/menu-icon/profil.png" class="img-icon" alt="">
+                        <img src="/images/menu-icon/profil.png" class="img-icon" alt="Profile">
                     </a>
                 </li>
                 <li>
                     <a href="/users/logout">
-                        <img src="images/menu-icon/logout.png" class="img-icon" alt="">
+                        <img src="images/menu-icon/logout.png" class="img-icon" alt="Logout">
                     </a>
                 </li>
             </ul>
@@ -52,7 +52,8 @@
             </a>
             <div class="profil-top">
                 <div class="profil-img">
-                    <img src="{{imgURL}}" class="img-profil" alt="">
+                    <img src="{{#if imgURL}}{{imgURL}}{{else}}/images/user/avatar2.png{{/if}}" class="img-profil"
+                        alt="">
                 </div>
                 <div class="profil-name">
                     <h6 class="h6">
@@ -113,7 +114,8 @@
                                 <div class="col-xl-6 modal-right">
                                     <h4 class="h4 modal-h4">{{this.title}}</h4>
                                     <div class="modal-user">
-                                        <img src="{{this.userImage}}" class="img-user-modal" alt="User Image">
+                                        <img src="{{#if this.userImage}}{{this.userImage}}{{else}}/images/user/avatar2.png{{/if}}"
+                                            class="img-user-modal" alt="User Image">
                                         <div class="modal-name">
                                             {{this.username}}
                                         </div>

@@ -21,16 +21,32 @@ router.post('/register', (req, res, next) => {
 
   var errors = req.validationErrors();
   if (errors && errors.length > 0)
-    return res.redirect('/users?RegisterError=' + encodeURIComponent(errors[0].msg));
+    return res.redirect('/users'
+      + '?RegisterError=' + encodeURIComponent(errors[0].msg)
+      + ((firstname && firstname != "") ? '&firstname=' + encodeURIComponent(firstname) : '')
+      + ((lastname && lastname != "") ? '&lastname=' + encodeURIComponent(lastname) : '')
+      + ((username && username != "") ? '&username=' + encodeURIComponent(username) : '')
+      + ((email && email != "") ? '&email=' + encodeURIComponent(email) : '')
+    );
 
   User.findOne({ 'username': username }, (user) => {
     if (user) {
-      return res.redirect('/users?RegisterError=' + encodeURIComponent('Username is already taken'));
+      return res.redirect('/users'
+        + '?RegisterError=' + encodeURIComponent('Username is already taken')
+        + ((firstname && firstname != "") ? '&firstname=' + encodeURIComponent(firstname) : '')
+        + ((lastname && lastname != "") ? '&lastname=' + encodeURIComponent(lastname) : '')
+        + ((email && email != "") ? '&email=' + encodeURIComponent(email) : '')
+      );
     }
   });
   User.findOne({ 'email': email }, (user) => {
     if (user) {
-      return res.redirect('/users?RegisterError=' + encodeURIComponent('Email is already taken'));
+      return res.redirect('/users'
+        + '?RegisterError=' + encodeURIComponent('Email is already taken')
+        + ((firstname && firstname != "") ? '&firstname=' + encodeURIComponent(firstname) : '')
+        + ((lastname && lastname != "") ? '&lastname=' + encodeURIComponent(lastname) : '')
+        + ((username && username != "") ? '&username=' + encodeURIComponent(username) : '')
+      );
     }
   });
   bcrypt.hash(password1, 10).then((hash) => {
@@ -53,13 +69,11 @@ router.post('/register', (req, res, next) => {
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
-
 passport.deserializeUser((id, done) => {
   User.getUserById(id, (err, user) => {
     done(err, user);
   });
 });
-
 passport.use(new LocalStrategy((username, password, done) => {
   User.getUserByUsername(username, (err, user) => {
     if (err) {
@@ -92,6 +106,14 @@ router.get('/', ensureNotAuthenticated, function (req, res, next) {
     handlebarsData['LoginError'] = decodeURIComponent(req.query.LoginError);
   if (req.query.Redirect && req.query.Redirect != "")
     handlebarsData['Redirect'] = decodeURIComponent(req.query.Redirect);
+  if (req.query.firstname)
+    handlebarsData['firstname'] = decodeURIComponent(req.query.firstname);
+  if (req.query.lastname)
+    handlebarsData['lastname'] = decodeURIComponent(req.query.lastname);
+  if (req.query.username)
+    handlebarsData['username'] = decodeURIComponent(req.query.username);
+  if (req.query.email)
+    handlebarsData['email'] = decodeURIComponent(req.query.email);
 
   return res.render('users', handlebarsData);
 });

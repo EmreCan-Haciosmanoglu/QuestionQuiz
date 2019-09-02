@@ -66,13 +66,16 @@ global.handleBarsSources = {
   </div>
 </div>`,
     "SBH": `<div class="capsule">
+<div class="profile-edit-close">
+    <img src="/images/quiz/cancel.png" alt="Cancel">
+</div>
 <div class="score-title">
     <h1 class="h1 h1-score">Scoreboard</h1>
 </div>
 <div class="container score-content">
     <div class="score-block-1st">
         <span> {{first.name}} </span> <span> {{first.point}} </span>
-        <img src="images/user-icon/medal.png" class="img-medal" alt="">
+        <img src="/images/user-icon/medal.png" class="img-medal" alt="">
         <div class="block-1st">
         </div>
     </div>
@@ -179,7 +182,7 @@ const answerRouter = require('./routes/answer');
 const homeRouter = require('./routes/home');
 const discoverRouter = require('./routes/discover');
 const error404Router = require('./routes/error404');
-const editRouter = require('./routes/edit');
+const profileEditRouter = require('./routes/profile-edit');
 
 
 
@@ -238,8 +241,7 @@ app.use('/answer', answerRouter);
 app.use('/home', homeRouter);
 app.use('/discover', discoverRouter);
 app.use('/404', error404Router);
-app.use('/edit', editRouter);
-app.use('/profile-edit', editRouter);
+app.use('/profile-edit', profileEditRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

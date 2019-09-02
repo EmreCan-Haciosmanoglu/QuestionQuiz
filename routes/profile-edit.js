@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.get('/', ensureAuthenticated, (req, res, next) => {
-    res.render('edit');
+    res.render('profile-edit');
 });
 
 function ensureAuthenticated(req, res, next) {
@@ -32,7 +32,7 @@ router.post('/', ensureAuthenticated, upload.single('fileToUpload'), (req, res, 
         User.findOne({ username: req.user.username }, (err, data) => {
             if (err) {
                 console.error(err);
-                return res.redirect("/edit");
+                return res.redirect('/profile-edit');
             }
             if (req.file) {
                 data.imgURL = req.file ? "uploads\\" + req.file.filename : "noImage.jpg";
@@ -43,7 +43,7 @@ router.post('/', ensureAuthenticated, upload.single('fileToUpload'), (req, res, 
         User.findOne({ username: req.user.username }, (err, data) => {
             if (err) {
                 console.error(err);
-                return res.redirect("/edit");
+                return res.redirect("/profile-edit");
             }
             if (username && username != "")
                 data.username = username;
@@ -71,30 +71,27 @@ router.post('/', ensureAuthenticated, upload.single('fileToUpload'), (req, res, 
                     }
                     else {
                         console.log('exist');
-                        Errors.push({ msg: "Given email is already used!" });
+                        Errors.push({ msg: 'Given email is already used!' });
                     }
-                    if (Errors.length == 0) {
-                        data.save();
+                    if (Errors.length > 0) {
+                        console.log('Errors:' + Errors);
+                        return res.render('profile-edit', { 'Error': Errors[0].msg });
                     }
-                    else {
-                        console.log("Errors:" + Errors);
-                        res.render('edit', { "Errors": Errors });
-                    }
+                    data.save();
                 });
             }
             else {
-                if (Errors.length == 0) {
-                    data.save();
-                }
-                else {
+                if (Errors.length > 0) {
                     console.log("Errors:" + Errors);
-                    res.render('edit', { "Errors": Errors });
+                    return res.render('profile-edit', { 'Error': Errors[0].msg });
                 }
+                data.save();
             }
+            return res.render('profile-edit', { Success: 'Profile successfully edited.' })
         });
     }
     else
-        res.redirect('/');
+        return res.redirect('/');
 });
 
 module.exports = router;

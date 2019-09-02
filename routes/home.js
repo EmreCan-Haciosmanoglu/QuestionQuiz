@@ -25,7 +25,7 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
       req.logOut();
       return res.redirect('/?Message=' + encodeURIComponent('Unknown Error occurred!'));
     }
-    Quiz.find({ "userId": user._id }, (error, quizData) => {
+    Quiz.find({ 'userId': user._id }, (error, quizData) => {
       var quizzes = [];
       if (error) {
         console.error(error);
@@ -63,7 +63,10 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-  return res.redirect('/users?LoginError=' + encodeURIComponent("You have to Login to see the page") + '&Redirect=' + encodeURIComponent(fullUrl));
+  return res.redirect('/users'
+    + '?LoginError=' + encodeURIComponent('You have to Login to see the page')
+    + '&Redirect=' + encodeURIComponent(fullUrl)
+  );
 }
 
 module.exports = router;

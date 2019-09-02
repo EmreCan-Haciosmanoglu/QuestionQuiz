@@ -3,34 +3,49 @@
 <div class="figure-2">
 </div>
 <div class="capsule">
+    <div class="profile-edit-close">
+        <a href="/home">
+            <img src="/images/quiz/cancel.png" alt="Cancel">
+        </a>
+    </div>
     <div class="container p-edit">
         <div class="col-lg-6 p-edit-capsule">
             <div class="user-logo p-edit-logo">
-                <img src="images/logo/logo-w.png" class="img-user-logo" alt="Quiz">
+                <a href="/home">
+                    <img src="/images/logo/logo-w.png" class="img-user-logo" alt="Logo">
+                </a>
             </div>
             <div class="signup-text">
                 Profile Edit
             </div>
             <div class="p-edit-in">
-                <form action="/edit" method="POST" enctype="multipart/form-data">
+                <form action="/profile-edit" method="POST" enctype="multipart/form-data">
                     <div class="profil-avatar">
-                        <label class="lbl-file-profil" for="profil"> Tap to add cover profil images <img src="" alt="">
+                        <label class="lbl-file-profil" for="profil">
+                            Tap to add cover profil images
+                            <img id="ProfileImage" src="" alt="">
                         </label>
-                        <input class="fileupload-profil" type="file" name="fileToUpload" id="profil">
+                        <input class="fileupload-profil" type="file" name="fileToUpload" id="profil"
+                            onchange="readProfileImageURL(this);">
                     </div>
                     <div class="user-name">
                         <input name="firstname" type="text" class="txt-username" placeholder="First Name">
                         <input name="lastname" type="text" class="txt-username" placeholder="Last Name">
                     </div>
-                    <input name="username" type="text" class="txt-signup" placeholder="Username">
+                    <input name="username" type="text" class="txt-signup" placeholder="User Name">
                     <input name="email" type="email" class="txt-signup" placeholder="E-Mail">
                     <input name="password1" type="password" class="txt-signup" placeholder="Password">
                     <input name="password2" type="password" class="txt-signup" placeholder="Confirm Password">
-                    {{#each Errors}}
+                    {{#if Error}}
                     <div class="login-error sign-err">
-                        {{this.msg}}
+                        {{Error}}
                     </div>
-                    {{/each}}
+                    {{/if}}
+                    {{#if Success}}
+                    <div class="login-succes sign-err">
+                        {{Success}}
+                    </div>
+                    {{/if}}
                     <div class="sign-button">
                         <button type="submit" class="btn-sign save">Save</button>
                     </div>
@@ -38,4 +53,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>
