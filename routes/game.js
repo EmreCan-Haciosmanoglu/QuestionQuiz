@@ -48,6 +48,11 @@ module.exports = (io) => {
 
     socket.on('enter-lobby', (pin) => {
       var Room = Rooms[pin];
+      if (!Room) {
+        var destination = '/game?pin=' + pin;
+        gameNamespace.to(socket.id).emit('redirect', destination);
+        return;
+      }
       var quiz = Room.quiz;
       var questions = quiz.question;
       var thePlayer = new Player('player_' + Math.floor(Math.random() * 10000), socket);
@@ -251,10 +256,19 @@ module.exports = (io) => {
     });
 
     socket.on('disconnect', () => {
-      Object.values(Rooms).forEach((room) => {
-        if (room[socket.id])
-          delete room[socket.id];
-      });
+      var arr = Object.keys(Rooms);
+
+      for (let i = 0; i < arr.length; i++) {
+        var room = Rooms[arr[i]];
+        if (room.players[socket.id]) {
+          delete room.players[socket.id];
+          console.log(Object.values(room.players));
+          console.log(Object.values(room.players).length);
+          if (Object.values(room.players).length == 0)
+            delete Rooms[arr[i]];
+          break;
+        }
+      }
     });
   });
   return router;

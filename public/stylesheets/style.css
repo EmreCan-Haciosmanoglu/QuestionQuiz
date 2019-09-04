@@ -262,7 +262,7 @@ ul {
 .img-quiz {
     width: 250px;
     min-height: 180px;
-    max-height: 180px;
+    max-height: 300px;
     border-radius: 41px;
     object-fit: cover;
 }

@@ -67,7 +67,9 @@ global.handleBarsSources = {
 </div>`,
     "SBH": `<div class="capsule">
 <div class="profile-edit-close">
-    <img src="/images/quiz/cancel.png" alt="Cancel">
+    <a href="/">
+        <img src="/images/quiz/cancel.png" alt="Cancel">
+    </a>
 </div>
 <div class="score-title">
     <h1 class="h1 h1-score">Scoreboard</h1>

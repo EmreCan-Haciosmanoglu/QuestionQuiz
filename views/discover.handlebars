@@ -1,6 +1,137 @@
 <div class="capsule-2">
     <header class="d-header">
         <div class="logo">
+            <img src="/images/logo/logo-v.png" class="img-logo">
+        </div>
+        <div class="menu">
+            <ul>
+                <li>
+                    <a href="/">
+                        <div class="icon">
+                            <img src="/images/menu-icon/enter-pin.png" class="img-icon" alt="Enter Pin">
+                        </div>
+                        Enter Pin
+                    </a>
+                </li>
+                <li>
+                    <a href="/discover">
+                        <div class="icon">
+                            <img src="/images/menu-icon/discover.png" class="img-icon" alt="Discover">
+                        </div>
+                        Discover
+                    </a>
+                </li>
+                <li>
+                    <a href="/quiz">
+                        <div class="icon">
+                            <img src="/images/menu-icon/create.png" class="img-icon" alt="Create Quiz">
+                        </div>
+                        Create
+                    </a>
+                </li>
+                <li class="li-icon">
+                    <a href="/home">
+                        <img src="images/menu-icon/profil.png" class="img-icon" alt="Home">
+                    </a>
+                </li>
+                <li>
+                    <a href="/users/logout">
+                        <img src="/images/menu-icon/logout.png" class="img-icon" alt="Logout">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="discover-menu">
+        <ul>
+            <li><a class="active" href="#"> History </a></li>
+        </ul>
+    </div>
+    <div class="discover-trend">
+        <div class="discover-trend-in">
+            <div class="discover-title">
+                <span class="spn-discover-title">Trending</span>
+                <span> <a href="#"> See All </a></span>
+            </div>
+            <div class="discover-trend-bottom">
+                {{#each Trending}}
+                <div data-toggle="modal" data-target=".bd-example-modal-lg-{{this.index}}" class="discover-trend-block">
+                    <img src="{{#if this.quizImage}} {{this.quizImage}}{{else}}/images/quiz/default-quiz.png{{/if}}"
+                        class="img-quiz" alt="">
+                    <div class="discover-block-text">
+                        <span class="spn-discover">{{this.quizTitle}} </span>
+                        <span class="spn-discover-2"> {{this.questionCount}} Quuestions</span>
+                        <div class="discover-owner">
+                            {{this.ownerName}} <img
+                                src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
+                                alt="">
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 modal-left">
+                            <img src="images/quiz/default-quiz.png" class="img-modal" alt="">
+                        </div>
+                        <div class="col-xl-6 modal-right">
+                            <h4 class="h4 modal-h4">Gerunds</h4>
+                            <div class="modal-user">
+                                <img src="images/user/avatar2.png" class="img-user-modal" alt="">
+                                <div class="modal-name">
+                                    sytopcu
+                                </div>
+                                <div class="modal-star">
+                                    <img src="images/quiz/edit.png" alt="" class="img-delete">
+                                    <img src="images/quiz/delete.png" class="img-delete" alt="Delete">
+                                </div>
+                            </div>
+                            <h5 class="h5-subtitle">Description</h5>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nisl
+                                metus, sagittis vitae luctus malesuada, tincidunt ac ligula. Integer mattis
+                                volutpat lacinia. Nunc at dui auctor, Nunc ac nunc venenatis, pulvinar quam
+                                et, aliquam mauris.
+                            </p>
+                            <div class="modal-start">
+                                <a href="#" class="btn-play">Play</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal content-->
+    <div class="discover-quizs">
+        <div class="discover-quizs-title">
+            <h3>Quizs</h3>
+        </div>
+        <div class="discover-quizs-bottom">
+            <div data-toggle="modal" data-target=".bd-example-modal-lg" class="discover-quizs-block">
+                <img src="images/quiz/default-quiz.png" class="img-quiz" alt="">
+                <div class="discover-quizs-text">
+                    <span class="spn-discover-quizs">Gerunds</span>
+                    <span class="spn-discover-2-quizs"> 32 Quuestions</span>
+                    <div class="discover-owner-quizs">
+                        burakaydin <img src="images/sago.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="capsule-2">
+    <header class="d-header">
+        <div class="logo">
             <img src="images/logo/logo-v.png" class="img-logo">
         </div>
         <div class="menu">
@@ -49,7 +180,7 @@
                     <a href="#"> See All </a>
                 </span>
             </div>
-            <div class="discover-trend-bottom"style="overflow:hidden; ">
+            <div class="discover-trend-bottom" style="overflow:hidden; ">
                 {{#each Trending}}
                 <div class="discover-trend-block">
                     <img src="{{this.quizImage}}" alt="quiz image">

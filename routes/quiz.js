@@ -184,12 +184,14 @@ router.get('/question', ensureAuthenticated, (req, res, next) => {
         quizID: quizID,
         Count: '' + questionCount + (firstDigit == 1 ? 'st' : firstDigit == 2 ? 'nd' : firstDigit == 3 ? 'rd' : 'th') + ' Question',
         Time: [
+          { value: 5 },
           { value: 10 },
+          { value: 15 },
           { value: 20 },
+          { value: 25 },
           { value: 30 },
-          { value: 40 },
-          { value: 50 },
-          { value: 60 }
+          { value: 35 },
+          { value: 40 }
         ]
       }
       if (req.query.ErrorMessage)
@@ -267,7 +269,7 @@ router.post('/question', uploadQuestion.single("fileToUpload"), (req, res) => {
         req.body.answer4
       ],
       answer: parseInt(req.body.option, 10),
-      time: parseInt(req.body.time, 10) * 10,
+      time: parseInt(req.body.time, 10),
       img: req.file ? 'uploads\\' + req.file.filename : 'uploads\\noImage.jpg'
     }
     if (!quizID || quizID == "")

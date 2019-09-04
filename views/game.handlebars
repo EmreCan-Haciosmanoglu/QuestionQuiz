@@ -11,6 +11,12 @@
     function emit() {
         socket.emit("start-the-game", { pin: pin });
     }
+    function httpGet(theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+    }
     function answer(index) {
         socket.emit('give-answer',
             {
@@ -26,6 +32,10 @@
         render(data);
         if (data.templatedata.value && data.templatedata.time)
             progress(data.templatedata.value, data.templatedata.time);
+    });
+    socket.on('redirect', (destination) => {
+        window.location.href = destination;
+//        document.write(httpGet(destination));
     });
     function render(data) {
         var source = data.source;
