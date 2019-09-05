@@ -1294,10 +1294,6 @@ ul {
     padding-top: 10px;
 }
 
-.slick-slide {
-    padding-left: 20px;
-}
-
 .slick-arrow.slick-next {
     background: url("../images/quiz/next-arrow.png");
     background-size: 100%;
@@ -2477,6 +2473,8 @@ select::-ms-expand {
     height: 400px;
     width: 65%;
     background-color: #9b3adb;
+    position: relative;
+    overflow: hidden;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
 }
@@ -2508,6 +2506,7 @@ select::-ms-expand {
     padding-right: 15px;
     color: #494444;
     padding-right: 30px;
+    margin-left:20px;
 }
 
 .discover-trend-block {
@@ -2561,7 +2560,6 @@ select::-ms-expand {
     background-color: white;
     position: absolute;
     bottom: 0;
-    padding-left: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -2576,10 +2574,12 @@ select::-ms-expand {
     font-weight: 600;
     color: #494444;
     padding-top: 10px;
+    padding-left: 15px;
 }
 
 .spn-discover-2 {
     font-size: 13px;
+    padding-left: 15px;
 }
 
 .discover-owner {

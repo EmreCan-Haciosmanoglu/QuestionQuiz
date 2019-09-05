@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Quiz = require('../models/Quiz');
+const fs = require('fs');
 
 router.get('/', ensureAuthenticated, (req, res, next) => {
     var quizData = [];
@@ -13,9 +14,7 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
             console.error(error);
             return res.redirect('/home');
         }
-        if (qresult.length < 1) {
-            quizData = qresult;
-        }
+        quizData = qresult;
 
         User.find({}, (error, result) => {
             if (error) {
@@ -37,10 +36,11 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
                         desc: quiz.description,
                         pin: quiz.pin
                     };
-                    if (ImageExist(quiz.img))
-                        q["quizImage"] = quiz.img;
-                    if (ImageExist(userData[quiz.userId].imgURL))
-                        q["ownerImage"] = userData[quiz.userId].imgURL;
+                    fileExist('public\\' + quiz.img, () => { q["quizImage"] = quiz.img; }, () => {
+                        fileExist('public\\' + userData[quiz.userId].imgURL, () => {  q["ownerImage"] = userData[quiz.userId].imgURL; }, () => {
+
+                        });
+                    });
 
                     quizzes.push(q);
                 }
@@ -50,10 +50,12 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
     });
 });
 
-function ImageExist(url) {
-    var img = new Image();
-    img.src = url;
-    return img.height != 0;
+function fileExist(filePath, callback1, callback2) {
+    fs.access(filePath, fs.F_OK, (err) => {
+        if (!err)
+            callback1();
+        callback2();
+    });
 }
 
 function ensureAuthenticated(req, res, next) {

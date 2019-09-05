@@ -60,47 +60,11 @@
                         class="img-quiz" alt="Quiz Image">
                     <div class="discover-block-text">
                         <span class="spn-discover">{{this.quizTitle}} </span>
-                        <span class="spn-discover-2"> {{this.questionCount}} Quuestions</span>
+                        <span class="spn-discover-2"> {{this.questionCount}} Questions</span>
                         <div class="discover-owner">
                             {{this.ownerName}} <img
                                 src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
                                 alt="Owner Image">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade bd-example-modal-lg-{{this.index}}" tabindex="-1" role="dialog"
-                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                        <div class="modal-content">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xl-6 modal-left">
-                                        <img src="{{#if this.quizImage}} {{this.quizImage}}{{else}}/images/quiz/default-quiz.png{{/if}}"
-                                            class="img-modal" alt="Quiz Image">
-                                    </div>
-                                    <div class="col-xl-6 modal-right">
-                                        <h4 class="h4 modal-h4">{{this.quizTitle}}</h4>
-                                        <div class="modal-user">
-                                            <img src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
-                                                class="img-user-modal" alt="Owner Image">
-                                            <div class="modal-name">
-                                                {{this.ownerName}}
-                                            </div>
-                                            <div class="modal-star">
-                                            </div>
-                                        </div>
-                                        <h5 class="h5-subtitle">Description</h5>
-                                        <p>
-                                            {{this.desc}}
-                                        </p>
-                                        <div class="modal-start">
-                                            <a href="/game?pin={{this.pin}}" class="btn-play">Play</a>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,6 +73,80 @@
         </div>
     </div>
     <!-- modal content-->
+    {{#each Trending}}
+    <div class="modal fade bd-example-modal-lg-{{this.index}}" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 modal-left">
+                            <img src="{{#if this.quizImage}} {{this.quizImage}}{{else}}/images/quiz/default-quiz.png{{/if}}"
+                                class="img-modal" alt="Quiz Image">
+                        </div>
+                        <div class="col-xl-6 modal-right">
+                            <h4 class="h4 modal-h4">{{this.quizTitle}}</h4>
+                            <div class="modal-user">
+                                <img src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
+                                    class="img-user-modal" alt="Owner Image">
+                                <div class="modal-name">
+                                    {{this.ownerName}}
+                                </div>
+                                <div class="modal-star">
+                                </div>
+                            </div>
+                            <h5 class="h5-subtitle">Description</h5>
+                            <p>
+                                {{this.desc}}
+                            </p>
+                            <div class="modal-start">
+                                <a href="/game?pin={{this.pin}}" class="btn-play">Play</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{#each Discover}}
+    <div class="modal fade bd-example-modal-lg{{this.index}}" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 modal-left">
+                            <img src="{{#if this.quizImage}} {{this.quizImage}}{{else}}/images/quiz/default-quiz.png{{/if}}"
+                                class="img-modal" alt="Quiz Image">
+                        </div>
+                        <div class="col-xl-6 modal-right">
+                            <h4 class="h4 modal-h4">{{this.quizTitle}}</h4>
+                            <div class="modal-user">
+                                <img src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
+                                    class="img-user-modal" alt="Owner Image">
+                                <div class="modal-name">
+                                    {{this.ownerName}}
+                                </div>
+                                <div class="modal-star">
+                                </div>
+                            </div>
+                            <h5 class="h5-subtitle">Description</h5>
+                            <p>
+                                {{this.desc}}
+                            </p>
+                            <div class="modal-start">
+                                <a href="/game?pin={{this.pin}}" class="btn-play">Play</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
     <div class="discover-quizs">
         <div class="discover-quizs-title">
             <h3>Quizs</h3>
@@ -118,49 +156,13 @@
             <div data-toggle="modal" data-target=".bd-example-modal-lg{{this.index}}" class="discover-quizs-block">
                 <img src="{{#if this.quizImage}} {{this.quizImage}}{{else}}/images/quiz/default-quiz.png{{/if}}"
                     class="img-quiz" alt="Quiz Image">
-                <div class="discover-block-text">
-                    <span class="spn-discover">{{this.quizTitle}} </span>
-                    <span class="spn-discover-2"> {{this.questionCount}} Quuestions</span>
-                    <div class="discover-owner">
+                <div class="discover-quizs-text">
+                    <span class="spn-discover-quizs">{{this.quizTitle}} </span>
+                    <span class="spn-discover-2-quizs"> {{this.questionCount}} Questions</span>
+                    <div class="discover-owner-quizs">
                         {{this.ownerName}} <img
                             src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
                             alt="Owner Image">
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade bd-example-modal-lg{{this.index}}" tabindex="-1" role="dialog"
-                aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xl-6 modal-left">
-                                    <img src="{{#if this.quizImage}} {{this.quizImage}}{{else}}/images/quiz/default-quiz.png{{/if}}"
-                                        class="img-modal" alt="Quiz Image">
-                                </div>
-                                <div class="col-xl-6 modal-right">
-                                    <h4 class="h4 modal-h4">{{this.quizTitle}}</h4>
-                                    <div class="modal-user">
-                                        <img src="{{#if this.ownerImage}}{{this.ownerImage}}{{else}}/images/user/avatar2.png{{/if}}"
-                                            class="img-user-modal" alt="Owner Image">
-                                        <div class="modal-name">
-                                            {{this.ownerName}}
-                                        </div>
-                                        <div class="modal-star">
-                                        </div>
-                                    </div>
-                                    <h5 class="h5-subtitle">Description</h5>
-                                    <p>
-                                        {{this.desc}}
-                                    </p>
-                                    <div class="modal-start">
-                                        <a href="/game?pin={{this.pin}}" class="btn-play">Play</a>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

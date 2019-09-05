@@ -93,7 +93,7 @@
             {{#each myQuizzes}}
             <div data-toggle="modal" data-target=".bd-example-modal-lg-{{this.index}}" class="my-quiz">
                 <div class="my-quiz-img">
-                    <img src="{{this.img}}" class="img-quiz" alt="Quiz Image">
+                    <img src="{{#if this.img}} {{this.img}}{{else}}/images/quiz/default-quiz.png{{/if}}" class="img-quiz" alt="Quiz Image">
                 </div>
                 <div class="my-quiz-name">
                     {{this.title}}
@@ -109,7 +109,8 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-xl-6 modal-left">
-                                    <img src="{{this.img}}" class="img-modal" alt="Quiz Image">
+                                    <img src="{{#if this.img}} {{this.img}}{{else}}/images/quiz/default-quiz.png{{/if}}"
+                                        class="img-modal" alt="Quiz Image">
                                 </div>
                                 <div class="col-xl-6 modal-right">
                                     <h4 class="h4 modal-h4">{{this.title}}</h4>
@@ -121,8 +122,10 @@
                                         </div>
                                         <div class="modal-star">
                                             <img src="/images/quiz/edit.png" alt="" class="img-delete">
-                                            <form action="/home/delete" method="POST">
-                                                <img src="/images/quiz/delete.png" class="img-delete" alt="Delete">
+                                            <form action="/home/delete" method="POST" onsubmit="return confirm('Are you sure?');">
+
+                                                <input type="image" src="/images/quiz/delete.png" class="img-delete"
+                                                    alt="Delete">
                                                 <input name="id" type="text" style="display: none;" value="{{this.id}}">
                                             </form>
                                         </div>

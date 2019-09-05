@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const fs = require('fs');
 const Quiz = require('../models/Quiz');
 
 router.post('/delete', ensureAuthenticated, (req, res) => {
@@ -16,6 +17,14 @@ router.post('/delete', ensureAuthenticated, (req, res) => {
   });
   return res.redirect("/home");
 });
+
+function fileExist(filePath, callback1, callback2) {
+    fs.access(filePath, fs.F_OK, (err) => {
+        if (!err)
+            callback1();
+        callback2();
+    });
+}
 
 router.get('/', ensureAuthenticated, (req, res, next) => {
 
@@ -33,18 +42,18 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
         return res.redirect('/?Message=' + encodeURIComponent('Unknown Error occurred!'));
       }
       quizData.forEach((quiz, index) => {
-        quizzes.push(
-          {
-            img: quiz.img,
-            id: '' + quiz._id,
-            title: quiz.title,
-            desc: quiz.description,
-            pin: quiz.pin,
-            index: index,
-            userImage: user.imgURL,
-            count: quiz.question.length,
-            username: user.username
-          });
+        var q = {
+          id: '' + quiz._id,
+          title: quiz.title,
+          desc: quiz.description,
+          pin: quiz.pin,
+          index: index,
+          userImage: user.imgURL,
+          count: quiz.question.length,
+          username: user.username
+        }
+        fileExist('public\\' + quiz.img, () => { q["img"] = quiz.img; }, () => { });
+        quizzes.push(q);
       });
       return res.render('home',
         {

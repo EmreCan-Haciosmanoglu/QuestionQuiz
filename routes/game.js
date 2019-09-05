@@ -37,7 +37,9 @@ module.exports = (io) => {
             answers: [0, 0, 0, 0],
             time: 0
           };
-          res.render('game', { value: 0, time: 100 });
+          if(quiz.question.length == 0)
+            return res.redirect('/?Message=' + encodeURIComponent('The Quiz has no question!'));
+          return res.render('game', { value: 0, time: 100 });
         }
       });
     }

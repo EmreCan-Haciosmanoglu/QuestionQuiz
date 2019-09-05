@@ -5,7 +5,7 @@ module.exports = (io) => {
 
   router.get('/', (req, res, next) => {
     if (req.query.Message && req.query.Message != "")
-      return res.render('index', { "Message": decodeURIComponent(req.query.message) });
+      return res.render('index', { "Message": decodeURIComponent(req.query.Message) });
     else
       return res.render('index');
   });
