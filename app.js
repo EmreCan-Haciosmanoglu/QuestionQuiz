@@ -189,7 +189,7 @@ const profileEditRouter = require('./routes/profile-edit');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 
 app.use(logger('dev'));
