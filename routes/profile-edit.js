@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/User');
-const { check, validationResult } = require('express-validator');
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {

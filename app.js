@@ -9,7 +9,6 @@ const session = require('express-session');
 var socket_io = require('socket.io');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var expressValidator = require('express-validator');
 var multer = require('multer');
 var upload = multer({ dest: './uploads' });
 var flash = require('connect-flash');
@@ -211,22 +210,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Validator
-app.use(expressValidator({
-    errorFormatter: function (param, msg, value) {
-        var namespace = param.split('.')
-            , root = namespace.shift()
-            , formParam = root;
+const { body, validationResult } = require('express-validator');
+const errorFormatter = (param, msg, value) => {
+    var namespace = param.split('.')
+        , root = namespace.shift()
+        , formParam = root;
 
-        while (namespace.length) {
-            formParam += '[' + namespace.shift() + ']';
-        }
-        return {
-            param: formParam,
-            msg: msg,
-            value: value
-        };
+    while (namespace.length) {
+        formParam += '[' + namespace.shift() + ']';
     }
-}));
+    return {
+        param: formParam,
+        msg: msg,
+        value: value
+    };
+};
+const myValidationResult = validationResult.withDefaults({ formatter: errorFormatter });
 
 //express-message
 app.use(flash());
