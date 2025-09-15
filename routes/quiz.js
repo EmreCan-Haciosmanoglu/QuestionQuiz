@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Quiz = require('../models/Quiz');
 const User = require('../models/User');
+const { body, validationResult } = require('express-validator');
 var multer = require('multer');
 
 var storageQuiz = multer.diskStorage({
@@ -101,10 +102,10 @@ router.post('/', uploadQuiz.single('fileToUpload'), (req, res) => {
     }
     const { title, description, location, language, visibility } = req.body;
 
-    req.checkBody("title", "Title is required").notEmpty();
-    req.checkBody("description", "Description is required").notEmpty();
+    await body("title", "Title is required").notEmpty().run(req);
+    await body("description", "Description is required").notEmpty().run(req);
 
-    var errors = req.validationErrors();
+    var errors = validationResult(req).array();
     if (errors && errors.length > 0) {
       if (req.file)
         await unlinkAsync(req.file.path)
@@ -233,14 +234,14 @@ router.post('/question', uploadQuestion.single("fileToUpload"), (req, res) => {
 
     const { answer1, answer2, answer3, answer4, quizID, title, option, time } = req.body;
 
-    req.checkBody('title', 'Title is required').notEmpty();
-    req.checkBody('answer1', '1st Answer is required').notEmpty();
-    req.checkBody('answer2', '2nd Answer is required').notEmpty();
-    req.checkBody('answer3', '3rd Answer is required').notEmpty();
-    req.checkBody('answer4', '4th Answer is required').notEmpty();
-    req.checkBody('quizID', 'Corrupted page').notEmpty();
+    await body('title', 'Title is required').notEmpty().run(req);
+    await body('answer1', '1st Answer is required').notEmpty().run(req);
+    await body('answer2', '2nd Answer is required').notEmpty().run(req);
+    await body('answer3', '3rd Answer is required').notEmpty().run(req);
+    await body('answer4', '4th Answer is required').notEmpty().run(req);
+    await body('quizID', 'Corrupted page').notEmpty().run(req);
 
-    var errors = req.validationErrors();
+    var errors = validationResult(req).array();
     if (errors && errors.length > 0) {
       if (req.file)
         await unlinkAsync(req.file.path)
