@@ -2,24 +2,24 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-
+const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-router.post('/register', (req, res, next) => {
+router.post('/register', async (req, res, next) => {
   const { email, password1, firstname, lastname, username } = req.body;
 
-  req.checkBody("firstname", "First name is required").notEmpty();
-  req.checkBody("lastname", "Last name is required").notEmpty();
-  req.checkBody("username", "Username is required").notEmpty();
-  req.checkBody("email", "E-mail is required").notEmpty();
-  req.checkBody("email", "E-mail is not valid").isEmail();
-  req.checkBody("password1", "Password is required").notEmpty();
-  req.checkBody("password2", "Passwords do not match").equals(req.body.password1);
+  await body("firstname", "First name is required").notEmpty().run(req);
+  await body("lastname", "Last name is required").notEmpty().run(req);
+  await body("username", "Username is required").notEmpty().run(req);
+  await body("email", "E-mail is required").notEmpty().run(req);
+  await body("email", "E-mail is not valid").isEmail().run(req);
+  await body("password1", "Password is required").notEmpty().run(req);
+  await body("password2", "Passwords do not match").equals(req.body.password1).run(req);
 
-  var errors = req.validationErrors();
+  var errors = validationResult(req).array();
   if (errors && errors.length > 0)
     return res.redirect('/users'
       + '?RegisterError=' + encodeURIComponent(errors[0].msg)
